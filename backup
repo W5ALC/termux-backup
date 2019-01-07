@@ -1,0 +1,58 @@
+#!/bin/bash
+
+FILE="/sdcard/Download/termux.tgz"
+echo "***************************************************************"
+echo "***************************************************************"
+echo "*********  Welcome to the Termux backup script  **************"
+echo "***************************************************************"
+echo "***************************************************************"
+echo ""
+echo ""
+echo -n "******  Are you sure you want to backup? yes or no: "
+read selection1
+if [ $selection1 == "yes" ];then
+	if [ ! -f "$FILE" ];then
+		echo "**************Creating new backup file***************"
+		cd /data/data/com.termux/files
+		tar -cvzf /sdcard/Download/termux.tgz --owner=0 --group=0 usr home
+		clear
+		echo ""
+	        echo ""
+		echo "******  Backup created. Exiting"
+		exit
+	else
+		if [ -f "$FILE" ];then
+			echo ""
+		        echo ""
+			echo -n "******  Backup already exists. Time for a new one?: "
+			read selection2
+				if [ $selection2 == "yes" ];then
+					clear
+					echo ""
+				        echo ""
+					echo "******  Removing old backup and creating new one**********"
+					rm -rf $FILE
+        				cd /data/data/com.termux/files
+				        tar -cvzf /sdcard/Download/termux.tgz --owner=0 --group=0 usr home
+					echo "******  Backup created. Exiting"
+					exit
+				else
+					clear
+					echo ""
+				        echo ""
+					echo "******  Keeping current backup."
+					echo ""
+                                        echo ""
+					echo "******  Be sure to run backup for more up-to-date files."
+					exit
+				fi
+		fi
+	fi
+else
+	clear
+	echo ""
+	echo ""
+	echo "**************  Termux not backed up exiting now  *************"
+	exit
+fi
+
